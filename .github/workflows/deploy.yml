@@ -31,6 +31,10 @@ jobs:
         run: npm run build
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
+      - name: Show built head (진단용)
+        run: |
+          grep -oE '<link[^>]+>' dist/index.html | while read -r l; do echo "::notice title=head::$l"; done
+          ls dist dist/icons | tr '\n' ' ' | sed 's/^/::notice title=files::/'
       - uses: actions/configure-pages@v5
         with:
           enablement: true
