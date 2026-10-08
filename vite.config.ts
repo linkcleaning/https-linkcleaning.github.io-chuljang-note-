@@ -28,7 +28,7 @@ export default defineConfig({
         description: '전국 출장·외근용 맛집·숙소·휴게소 10초 기록 앱',
         lang: 'ko',
         id: `${base}?app=v3`, // 앱 고유 ID를 새로 지정해 폰에 남은 예전 앱 정보(아이콘)와 분리
-        start_url: base,
+        start_url: `${base}?home=v3`, // 시작 주소를 바꿔 아이폰이 기억하는 예전 아이콘과 분리
         scope: base,
         display: 'standalone',
         orientation: 'portrait',
