@@ -37,6 +37,7 @@ export default defineConfig({
       injectRegister: 'script', // 서비스워커 등록 스크립트 자동 삽입
       // 매니페스트 파일 이름을 바꿔 폰·브라우저에 남은 예전 매니페스트(예전 아이콘)를 우회
       manifestFilename: 'app-v3.webmanifest',
+      includeManifestIcons: false, // 아이콘은 서비스워커 캐시에 넣지 않음
       manifest: {
         name: '어디서 먹고 자지?',
         short_name: '어디서먹고자지',
