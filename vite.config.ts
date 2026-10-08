@@ -15,7 +15,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate', // 새 버전 배포 시 자동 갱신
       injectRegister: 'script', // 서비스워커 등록 스크립트 자동 삽입
-      includeAssets: ['icons/icon.svg', 'icons/apple-touch-icon.png'],
+      includeAssets: ['icons/icon-v2.svg', 'icons/apple-touch-icon-v2.png'],
       manifest: {
         name: '어디서 먹고 자지?',
         short_name: '어디서먹고자지',
@@ -28,9 +28,9 @@ export default defineConfig({
         background_color: '#2D2A78',
         theme_color: '#0f766e',
         icons: [
-          { src: 'icons/pwa-192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'icons/pwa-512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'icons/maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: 'icons/pwa-192-v2.png', sizes: '192x192', type: 'image/png' },
+          { src: 'icons/pwa-512-v2.png', sizes: '512x512', type: 'image/png' },
+          { src: 'icons/maskable-512-v2.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {
