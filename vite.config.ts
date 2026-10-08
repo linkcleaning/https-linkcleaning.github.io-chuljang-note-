@@ -7,8 +7,12 @@ import { VitePWA } from 'vite-plugin-pwa';
 // 배포 워크플로가 BASE_PATH 환경변수를 넘겨줍니다. (로컬 개발은 '/')
 const base = process.env.BASE_PATH || '/';
 
+// 설정 화면 하단에 표시되는 빌드 시각 (최신 버전인지 확인용, 한국시간)
+const buildTime = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 16).replace('T', ' ');
+
 export default defineConfig({
   base,
+  define: { __BUILD_TIME__: JSON.stringify(buildTime) },
   plugins: [
     react(),
     tailwindcss(),
@@ -34,9 +38,20 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}'],
-        navigateFallback: 'index.html',
+        // 화면(HTML)은 미리 저장하지 않고 '인터넷 먼저' → 새 버전이 바로 반영됨.
+        // 오프라인일 때만 마지막으로 받아 둔 화면을 씀.
+        globPatterns: ['**/*.{js,css,svg,png,ico,webmanifest}'],
+        navigateFallback: null,
         cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: { cacheName: 'pages', networkTimeoutSeconds: 4 },
+          },
+        ],
       },
     }),
   ],

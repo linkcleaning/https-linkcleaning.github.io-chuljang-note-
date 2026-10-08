@@ -253,7 +253,7 @@ export function SettingsView({
         </div>
       </Sheet>
 
-      <p className="text-center text-xs text-stone-400">어디서 먹고 자지? v1.1 · 로그인 없이 이 기기에만 저장</p>
+      <p className="text-center text-xs text-stone-400">어디서 먹고 자지? · 업데이트 {__BUILD_TIME__}</p>
     </div>
   );
 }
