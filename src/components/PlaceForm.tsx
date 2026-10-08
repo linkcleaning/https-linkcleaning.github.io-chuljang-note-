@@ -583,7 +583,7 @@ function PriceInput({
   onChange: (v: string) => void;
   onPreset: (n: number) => void;
   presets: number[];
-  tone: 'food' | 'stay';
+  tone: 'food' | 'stay' | 'rest';
 }) {
   const n = parsePrice(value);
   return (
