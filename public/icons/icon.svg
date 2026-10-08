@@ -1,6 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#0f766e"/>
-  <path d="M256 96c-70.7 0-128 55.6-128 124.2 0 86.4 104.6 183.6 119.5 196.9a12.6 12.6 0 0 0 17 0C279.4 403.8 384 306.6 384 220.2 384 151.6 326.7 96 256 96z" fill="#fff"/>
-  <circle cx="256" cy="218" r="58" fill="#f97316"/>
-  <path d="M234 190v26a10 10 0 0 0 10 10h0v32M244 190v24M254 190v26a10 10 0 0 1-10 10M276 190c-8 6-10 18-10 30h10v38" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="#FFA24C"/>
+    <stop offset="0.48" stop-color="#F2546B"/>
+    <stop offset="1" stop-color="#2D2A78"/>
+  </linearGradient>
+  <linearGradient id="bowl" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F65E5D"/>
+    <stop offset="1" stop-color="#D93E62"/>
+  </linearGradient>
+  <filter id="sh" x="-30%" y="-30%" width="160%" height="160%">
+    <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#1B1650" flood-opacity="0.35"/>
+  </filter>
+</defs>
+<rect width="512" height="512" rx="114" fill="url(#sky)"/>
+<g transform="translate(256 256) scale(1.0) translate(-256 -256)">
+  <!-- 달·별 (자고) -->
+  <path d="M396 76a50 50 0 1 0 40 82a40 40 0 1 1 -40 -82z" fill="#FFF4D6"/>
+  <circle cx="352" cy="78" r="7" fill="#FFF4D6"/>
+  <circle cx="452" cy="196" r="5" fill="#FFF4D6" opacity="0.85"/>
+  <!-- 위치 핀 (어디서) -->
+  <path filter="url(#sh)" d="M256 452C222 404 134 330 134 230a122 122 0 0 1 244 0c0 100-88 174-122 222z" fill="#FFFFFF"/>
+  <!-- 김 -->
+  <g fill="none" stroke="#F4895F" stroke-width="12" stroke-linecap="round">
+    <path d="M222 214c-12-14 12-26 0-42"/>
+    <path d="M256 208c-12-14 12-26 0-42"/>
+    <path d="M290 214c-12-14 12-26 0-42"/>
+  </g>
+  <!-- 밥그릇 (먹고) -->
+  <path d="M182 236h148a74 70 0 0 1-148 0z" fill="url(#bowl)"/>
+  <rect x="226" y="300" width="60" height="14" rx="7" fill="#D93E62"/>
+</g>
 </svg>
