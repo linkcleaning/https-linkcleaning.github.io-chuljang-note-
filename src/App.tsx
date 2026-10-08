@@ -207,13 +207,13 @@ export default function App() {
   const regionActive = !!region.sido;
 
   return (
-    <div className="mx-auto min-h-dvh max-w-lg pb-28">
+    <div className="app-shell mx-auto min-h-dvh max-w-lg">
       {view === 'list' ? (
         <>
           {/* ===== 상단: 검색 · 지역 · 탭 ===== */}
           <header className="pt-safe sticky top-0 z-30 bg-stone-100/95 backdrop-blur dark:bg-stone-950/95">
             <div className="px-4 pt-3">
-              <h1 className="mb-2 px-0.5 text-[19px] font-extrabold tracking-tight">
+              <h1 className="mb-2 text-[18px] leading-6 font-extrabold tracking-tight">
                 어디서 먹고 자지<span className="text-brand-600">?</span>
               </h1>
               <div className="flex items-center gap-2">
@@ -235,7 +235,7 @@ export default function App() {
                     type="search"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="상호·메뉴·메모 검색"
+                    placeholder="상호·메뉴 검색"
                     className="min-h-12 w-full rounded-2xl bg-white pr-10 pl-10 text-[16px] ring-1 ring-stone-200 outline-none focus:ring-2 focus:ring-brand-600 dark:bg-stone-900 dark:ring-stone-800"
                   />
                   {query && (
@@ -251,11 +251,11 @@ export default function App() {
               </div>
 
               {/* 빠른 지역 칩 */}
-              <div className="no-scrollbar -mx-4 mt-2.5 flex gap-2 overflow-x-auto px-4 pb-0.5">
+              <div className="no-scrollbar -mx-4 mt-2 flex gap-1.5 overflow-x-auto px-4">
                 {regionActive && (
                   <button
                     onClick={() => setRegion({ sido: '', sigungu: '' })}
-                    className="flex min-h-10 shrink-0 items-center gap-1 rounded-full bg-stone-800 px-3.5 text-sm font-semibold text-white dark:bg-stone-200 dark:text-stone-900"
+                    className="flex h-9 shrink-0 items-center gap-1 rounded-full bg-stone-800 px-3 text-sm font-semibold text-white dark:bg-stone-200 dark:text-stone-900"
                   >
                     <X className="size-4" /> 전국
                   </button>
@@ -267,7 +267,7 @@ export default function App() {
                     <button
                       key={`${r.sido}|${r.sigungu}`}
                       onClick={() => setRegion(active ? { sido: '', sigungu: '' } : r)}
-                      className={`min-h-10 shrink-0 rounded-full px-3.5 text-sm font-semibold active:scale-95 ${
+                      className={`h-9 shrink-0 rounded-full px-3 text-sm font-semibold whitespace-nowrap active:scale-95 ${
                         active
                           ? 'bg-brand-700 text-white'
                           : 'bg-white text-stone-700 ring-1 ring-stone-200 dark:bg-stone-900 dark:text-stone-300 dark:ring-stone-800'
@@ -282,7 +282,7 @@ export default function App() {
             </div>
 
             {/* 탭 */}
-            <div className="mt-2 grid grid-cols-4 gap-1 px-4 pb-2.5">
+            <div className="mx-4 mt-2.5 mb-2.5 grid grid-cols-4 gap-1 rounded-2xl bg-stone-200/70 p-1 dark:bg-stone-900">
               {(
                 [
                   ['all', '전체', List, 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900'],
@@ -294,15 +294,13 @@ export default function App() {
                 <button
                   key={v}
                   onClick={() => setTab(v)}
-                  className={`flex min-h-14 flex-col items-center justify-center rounded-2xl text-[14px] leading-tight font-bold transition ${
-                    tab === v ? on : 'text-stone-500 dark:text-stone-400'
+                  className={`flex h-11 min-w-0 items-center justify-center gap-1 rounded-xl text-[14px] font-bold whitespace-nowrap transition ${
+                    tab === v ? `${on} shadow-sm` : 'text-stone-500 dark:text-stone-400'
                   }`}
                 >
-                  <span className="flex items-center gap-1">
-                    <Icon className="size-4" />
-                    {label}
-                  </span>
-                  <span className="text-xs font-semibold opacity-70">{tabCounts[v]}</span>
+                  <Icon className="size-4 shrink-0 max-[370px]:hidden" />
+                  {label}
+                  <span className="text-[11px] font-semibold opacity-70 tabular-nums">{tabCounts[v]}</span>
                 </button>
               ))}
             </div>
@@ -311,10 +309,10 @@ export default function App() {
           {/* ===== 목록 ===== */}
           <main className="px-4">
             {visible.length > 0 && (
-              <div className="mt-1 mb-1 flex justify-end">
+              <div className="-mt-1 flex justify-end">
                 <button
                   onClick={() => setSort(sort === 'recent' ? 'rating' : 'recent')}
-                  className="flex min-h-10 items-center gap-1 rounded-xl px-2 text-sm font-semibold text-stone-500"
+                  className="-mr-2 flex h-10 items-center gap-1 rounded-xl px-2 text-[13px] font-semibold text-stone-500"
                 >
                   {sort === 'recent' ? <Clock className="size-4" /> : <Star className="size-4" />}
                   {sort === 'recent' ? '최근 방문순' : '추천·별점순'}
@@ -336,7 +334,7 @@ export default function App() {
             )}
 
             {groups.map((g) => (
-              <section key={g.label} className="mb-5">
+              <section key={g.label} className="mb-6">
                 {(groups.length > 1 || !region.sigungu) && (
                   <h2 className="mb-2 flex items-center gap-1.5 px-1 text-[15px] font-extrabold text-stone-600 dark:text-stone-300">
                     <MapPin className="size-4 text-brand-600" />
@@ -355,8 +353,8 @@ export default function App() {
         </>
       ) : (
         <>
-          <header className="pt-safe sticky top-0 z-30 bg-stone-100/95 px-5 pt-4 pb-2 backdrop-blur dark:bg-stone-950/95">
-            <h1 className="text-2xl font-extrabold">설정</h1>
+          <header className="pt-safe sticky top-0 z-30 bg-stone-100/95 backdrop-blur dark:bg-stone-950/95">
+            <h1 className="px-4 pt-3 pb-1 text-[22px] font-extrabold">설정·백업</h1>
           </header>
           <SettingsView
             places={places}
@@ -370,13 +368,13 @@ export default function App() {
 
       {/* ===== 바텀 내비게이션 ===== */}
       <nav className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-stone-200 bg-white/95 backdrop-blur dark:border-stone-800 dark:bg-stone-900/95">
-        <div className="mx-auto grid h-[68px] max-w-lg grid-cols-3 items-center">
+        <div className="mx-auto grid h-16 max-w-lg grid-cols-3 items-center">
           <NavBtn active={view === 'list'} onClick={() => setView('list')} icon={<List className="size-6" />} label="목록" />
           <div className="flex justify-center">
             <button
               onClick={openNew}
               aria-label="새 기록"
-              className="-mt-7 flex size-[68px] flex-col items-center justify-center rounded-full bg-brand-700 text-white shadow-xl ring-4 shadow-brand-700/30 ring-stone-100 active:scale-95 dark:ring-stone-950"
+              className="-mt-6 flex size-16 items-center justify-center rounded-full bg-brand-700 text-white shadow-lg ring-4 shadow-brand-700/30 ring-white active:scale-95 dark:ring-stone-900"
             >
               <Plus className="size-8" strokeWidth={2.6} />
             </button>
@@ -425,7 +423,7 @@ export default function App() {
       />
 
       {toastMsg && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-28 z-[60] flex justify-center px-6">
+        <div className="toast-pos pointer-events-none fixed inset-x-0 z-[60] flex justify-center px-6">
           <div className="animate-fade-in rounded-2xl bg-stone-900/90 px-5 py-3 text-[15px] font-semibold text-white shadow-lg dark:bg-stone-100/95 dark:text-stone-900">
             {toastMsg}
           </div>

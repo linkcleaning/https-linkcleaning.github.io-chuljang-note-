@@ -77,11 +77,11 @@ export function SettingsView({
     window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as Navigator & { standalone?: boolean }).standalone === true;
 
-  const card = 'rounded-3xl bg-white p-5 shadow-sm ring-1 ring-stone-200 dark:bg-stone-900 dark:ring-stone-800';
+  const card = 'rounded-3xl bg-white p-4 shadow-sm ring-1 ring-stone-200 dark:bg-stone-900 dark:ring-stone-800';
   const h = 'mb-3 text-[15px] font-bold text-stone-500 dark:text-stone-400';
 
   return (
-    <div className="space-y-4 px-4 pt-4 pb-6">
+    <div className="space-y-3 px-4 pt-2 pb-6">
       <section className={card}>
         <h2 className={h}>내 기록</h2>
         <div className="grid grid-cols-4 text-center">

@@ -364,7 +364,7 @@ export function PlaceForm({
                       placeholder="메뉴"
                       className={`${inputCls} min-w-0 flex-1 font-semibold`}
                     />
-                    <div className="relative w-32 shrink-0">
+                    <div className="relative w-28 shrink-0">
                       <input
                         defaultValue={d.price ? d.price.toLocaleString('ko-KR') : ''}
                         key={`${i}-${d.name}`}
@@ -383,7 +383,7 @@ export function PlaceForm({
                       type="button"
                       onClick={() => removeDish(i)}
                       aria-label="메뉴 삭제"
-                      className="grid size-11 shrink-0 place-items-center rounded-xl text-stone-400 active:bg-stone-100 dark:active:bg-stone-800"
+                      className="-ml-1 grid size-10 shrink-0 place-items-center rounded-xl text-stone-400 active:bg-stone-100 dark:active:bg-stone-800"
                     >
                       <X className="size-5" />
                     </button>
@@ -602,7 +602,7 @@ function PriceInput({
         />
         <span className="absolute top-1/2 right-4 -translate-y-1/2 font-semibold text-stone-400">원</span>
       </div>
-      <div className="no-scrollbar -mx-5 mt-2 flex gap-2 overflow-x-auto px-5">
+      <div className="no-scrollbar -mx-4 mt-2 flex gap-2 overflow-x-auto px-4">
         {presets.map((p) => (
           <Chip key={p} active={n === p} onClick={() => onPreset(p)} tone={tone}>
             {shortWon(p)}

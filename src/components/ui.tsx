@@ -37,10 +37,10 @@ export function Sheet({
         role="dialog"
         aria-modal="true"
         className={`animate-sheet-up relative mx-auto flex w-full max-w-lg flex-col rounded-t-3xl bg-white shadow-2xl dark:bg-stone-900 ${
-          full ? 'h-[94dvh]' : 'max-h-[88dvh]'
+          full ? 'sheet-full' : 'sheet-max'
         }`}
       >
-        <div className="flex items-center gap-2 border-b border-stone-200 px-5 pt-3 pb-3 dark:border-stone-800">
+        <div className="flex items-center gap-2 border-b border-stone-200 py-2 pr-3 pl-4 dark:border-stone-800">
           <div className="min-w-0 flex-1 text-lg font-bold">{title}</div>
           <button
             onClick={onClose}
@@ -50,7 +50,7 @@ export function Sheet({
             <X className="size-6" />
           </button>
         </div>
-        <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-4">{children}</div>
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 pt-4 pb-6">{children}</div>
         {footer && (
           <div className="pb-safe border-t border-stone-200 bg-white px-4 pt-3 dark:border-stone-800 dark:bg-stone-900">
             <div className="pb-3">{footer}</div>

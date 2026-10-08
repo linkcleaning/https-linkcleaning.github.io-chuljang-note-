@@ -66,7 +66,7 @@ export function PlaceCard({ p, onOpen }: { p: Place; onOpen: () => void }) {
         p.revisit === 'no' ? 'opacity-75' : ''
       }`}
     >
-      <button onClick={onOpen} className="block w-full px-4 pt-4 pb-3 text-left active:bg-stone-50 dark:active:bg-stone-800/60">
+      <button onClick={onOpen} className="block w-full px-4 pt-3.5 pb-3 text-left active:bg-stone-50 dark:active:bg-stone-800/60">
         <div className="flex items-start gap-3">
           <div className={`grid size-11 shrink-0 place-items-center rounded-2xl ${st.icon}`}>
             <CategoryIcon c={p.category} className="size-5" />

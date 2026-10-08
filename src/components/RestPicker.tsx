@@ -92,7 +92,7 @@ export function RestPicker({
       </button>
       {locErr && <p className="mt-1.5 text-sm font-semibold text-rose-600">{locErr}</p>}
 
-      <div className="no-scrollbar -mx-5 mt-3 flex gap-2 overflow-x-auto px-5 pb-1">
+      <div className="no-scrollbar -mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1">
         {['', ...REST_ROUTES].map((r) => (
           <button
             key={r || 'all'}

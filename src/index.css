@@ -41,11 +41,37 @@ textarea {
   scrollbar-width: none;
 }
 
+/* 아이폰 노치·홈바 영역 (홈 화면 앱으로 실행 시) */
 .pb-safe {
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .pt-safe {
-  padding-top: env(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* 바텀시트 높이: 상태바(노치) 아래까지만 */
+.sheet-full {
+  height: calc(100dvh - env(safe-area-inset-top, 0px) - 10px);
+}
+.sheet-max {
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px) - 48px);
+}
+/* 목록 하단 여백: 바텀 내비 + 홈바 */
+.app-shell {
+  padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
+}
+.toast-pos {
+  bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* 모바일 터치: 더블탭 확대·롱프레스 메뉴·버튼 글자 선택 방지 */
+button,
+a,
+[role='switch'] {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 @keyframes sheet-up {
