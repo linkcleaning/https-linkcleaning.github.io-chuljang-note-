@@ -97,3 +97,17 @@ a,
 .animate-fade-in {
   animation: fade-in 0.18s ease-out;
 }
+
+/* 마스코트 캐리어: 앱을 열 때 한 번 통통 */
+@keyframes mascot-hop {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  30% { transform: translateY(-4px) rotate(-8deg); }
+  60% { transform: translateY(0) rotate(4deg); }
+}
+.mascot {
+  display: inline-block;
+  animation: mascot-hop 0.9s ease-in-out 0.3s 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mascot { animation: none; }
+}
