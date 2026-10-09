@@ -29,9 +29,9 @@ export function MascotButton() {
       type="button"
       onClick={play}
       aria-label="마스코트 캐리어 (누르면 소리)"
-      className="-my-1 -mr-1 grid size-12 shrink-0 place-items-center rounded-full active:scale-90"
+      className="mascot-float fixed z-40 grid size-14 -translate-y-1/2 place-items-center rounded-full bg-white/90 shadow-lg ring-1 ring-stone-200 backdrop-blur active:scale-90 dark:bg-stone-800/90 dark:ring-stone-700"
     >
-      <span key={hop} aria-hidden className="mascot text-[30px] leading-none">
+      <span key={hop} aria-hidden className="mascot text-[32px] leading-none">
         🧳
       </span>
     </button>

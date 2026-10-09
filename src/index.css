@@ -111,3 +111,9 @@ a,
 @media (prefers-reduced-motion: reduce) {
   .mascot { animation: none; }
 }
+
+/* 떠 있는 마스코트: 화면 오른쪽 세로 가운데 (넓은 화면에서는 앱 폭 안쪽 오른쪽) */
+.mascot-float {
+  top: 50%;
+  right: max(8px, calc((100vw - 32rem) / 2 + 8px));
+}

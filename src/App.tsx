@@ -216,12 +216,12 @@ export default function App() {
           {/* ===== 상단: 검색 · 지역 · 탭 ===== */}
           <header className="pt-safe sticky top-0 z-30 bg-stone-100/95 backdrop-blur dark:bg-stone-950/95">
             <div className="px-4 pt-3">
-              <div className="mb-1.5 flex items-center justify-between">
-                <h1 className="text-[18px] leading-6 font-extrabold tracking-tight">
+              <h1 className="mb-2 flex items-center gap-1.5 text-[18px] leading-6 font-extrabold tracking-tight">
+                <span aria-hidden className="mascot text-[22px] leading-none">🧳</span>
+                <span>
                   어디서 먹고 자지<span className="text-brand-600">?</span>
-                </h1>
-                <MascotButton />
-              </div>
+                </span>
+              </h1>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setRegionOpen(true)}
@@ -374,6 +374,9 @@ export default function App() {
           />
         </>
       )}
+
+      {/* ===== 오른쪽 가운데 떠 있는 마스코트 (누르면 소리) ===== */}
+      <MascotButton />
 
       {/* ===== 바텀 내비게이션 ===== */}
       <nav className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-stone-200 bg-white/95 backdrop-blur dark:border-stone-800 dark:bg-stone-900/95">
