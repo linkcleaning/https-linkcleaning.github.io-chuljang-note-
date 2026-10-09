@@ -59,7 +59,7 @@ export default defineConfig({
       workbox: {
         // 화면(HTML)은 미리 저장하지 않고 '인터넷 먼저' → 새 버전이 바로 반영됨.
         // 오프라인일 때만 마지막으로 받아 둔 화면을 씀.
-        globPatterns: ['**/*.{js,css}'], // 아이콘·매니페스트는 서비스워커를 거치지 않고 항상 인터넷에서 받음
+        globPatterns: ['**/*.{js,css,mp3}'], // 아이콘·매니페스트는 서비스워커를 거치지 않고 항상 인터넷에서 받음
         navigateFallback: null,
         cleanupOutdatedCaches: true,
         skipWaiting: true,

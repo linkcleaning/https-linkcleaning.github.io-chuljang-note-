@@ -24,6 +24,7 @@ import { PlaceDetail } from './components/PlaceDetail';
 import { PlaceForm } from './components/PlaceForm';
 import { RegionPicker } from './components/RegionPicker';
 import { SettingsView } from './components/SettingsView';
+import { MascotButton } from './components/Mascot';
 
 type View = 'list' | 'settings';
 type Sort = 'recent' | 'rating';
@@ -215,12 +216,12 @@ export default function App() {
           {/* ===== 상단: 검색 · 지역 · 탭 ===== */}
           <header className="pt-safe sticky top-0 z-30 bg-stone-100/95 backdrop-blur dark:bg-stone-950/95">
             <div className="px-4 pt-3">
-              <h1 className="mb-2 flex items-center gap-1.5 text-[18px] leading-6 font-extrabold tracking-tight">
-                <span aria-hidden className="mascot text-[22px] leading-none">🧳</span>
-                <span>
+              <div className="mb-1.5 flex items-center justify-between">
+                <h1 className="text-[18px] leading-6 font-extrabold tracking-tight">
                   어디서 먹고 자지<span className="text-brand-600">?</span>
-                </span>
-              </h1>
+                </h1>
+                <MascotButton />
+              </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setRegionOpen(true)}
