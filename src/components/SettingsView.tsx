@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import { Download, HardDrive, Monitor, Moon, Share, ShieldCheck, Smartphone, Sun, Trash2, Upload } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Download, Monitor, Moon, Share, Smartphone, Sun, Trash2, Upload } from 'lucide-react';
 import type { Place } from '../types';
 import type { Theme } from '../lib/prefs';
 import { exportJSON, lastBackupAt, mergePlaces, readBackupFile } from '../lib/backup';
-import { requestPersist, storageMode } from '../lib/db';
 import { Sheet } from './ui';
 
 export function SettingsView({
@@ -20,12 +19,7 @@ export function SettingsView({
   toast: (m: string) => void;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [persisted, setPersisted] = useState<boolean | null>(null);
   const [lastBackup, setLastBackup] = useState(lastBackupAt());
-
-  useEffect(() => {
-    navigator.storage?.persisted?.().then(setPersisted).catch(() => setPersisted(null));
-  }, []);
 
   const food = places.filter((p) => p.category === 'food').length;
   const cafe = places.filter((p) => p.category === 'cafe').length;
@@ -73,10 +67,6 @@ export function SettingsView({
   };
 
   const days = lastBackup ? Math.floor((Date.now() - lastBackup) / 86400000) : null;
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const standalone =
-    window.matchMedia('(display-mode: standalone)').matches ||
-    (navigator as Navigator & { standalone?: boolean }).standalone === true;
 
   const card = 'rounded-3xl bg-white p-4 shadow-sm ring-1 ring-stone-200 dark:bg-stone-900 dark:ring-stone-800';
   const h = 'mb-3 text-[15px] font-bold text-stone-500 dark:text-stone-400';
@@ -163,48 +153,45 @@ export function SettingsView({
       </section>
 
       <section className={card}>
-        <h2 className={h}>저장소</h2>
-        <div className="flex items-center gap-3 text-[15px]">
-          <HardDrive className="size-5 text-stone-400" />
-          <span className="flex-1">저장 방식: {storageMode()}</span>
-        </div>
-        <div className="mt-3 flex items-center gap-3 text-[15px]">
-          <ShieldCheck className={`size-5 ${persisted ? 'text-emerald-600' : 'text-stone-400'}`} />
-          <span className="flex-1">{persisted ? '영구 보관 설정됨' : '영구 보관 미설정'}</span>
-          {!persisted && (
-            <button
-              onClick={async () => {
-                const ok = await requestPersist();
-                setPersisted(ok);
-                toast(ok ? '영구 보관이 설정됐어요' : '홈 화면에 추가하면 더 안전하게 보관돼요');
-              }}
-              className="min-h-10 rounded-xl border border-stone-300 px-3 text-sm font-semibold dark:border-stone-700"
-            >
-              요청
-            </button>
-          )}
-        </div>
-      </section>
-
-      {!standalone && (
-        <section className={card}>
-          <h2 className={h}>홈 화면에 앱으로 설치</h2>
-          {isIOS ? (
-            <ol className="space-y-2 text-[15px] text-stone-700 dark:text-stone-300">
-              <li className="flex items-center gap-2">
-                <Smartphone className="size-5 text-stone-400" /> Safari로 이 페이지를 열고
+        <h2 className={h}>홈 화면에 앱으로 추가</h2>
+        <div className="space-y-3">
+          <div className="rounded-2xl bg-stone-100 p-3.5 dark:bg-stone-800">
+            <p className="mb-2 flex items-center gap-1.5 text-[15px] font-bold">
+              <Smartphone className="size-4" /> 아이폰
+            </p>
+            <ol className="list-decimal space-y-1 pl-5 text-[15px] leading-relaxed text-stone-700 dark:text-stone-300">
+              <li>
+                <b>Safari</b>로 이 주소를 엽니다
               </li>
-              <li className="flex items-center gap-2">
-                <Share className="size-5 text-stone-400" /> 하단 공유 버튼 → <b>홈 화면에 추가</b>
+              <li>
+                아래쪽 <b>공유</b> 버튼 <Share className="inline size-4 align-[-2px]" /> 을 누릅니다
+              </li>
+              <li>
+                <b>홈 화면에 추가</b> → 오른쪽 위 <b>추가</b>
               </li>
             </ol>
-          ) : (
-            <p className="text-[15px] text-stone-700 dark:text-stone-300">
-              크롬 메뉴(⋮) → <b>홈 화면에 추가</b> 또는 <b>앱 설치</b>를 누르세요. 설치하면 인터넷이 없어도 열려요.
+          </div>
+          <div className="rounded-2xl bg-stone-100 p-3.5 dark:bg-stone-800">
+            <p className="mb-2 flex items-center gap-1.5 text-[15px] font-bold">
+              <Smartphone className="size-4" /> 안드로이드
             </p>
-          )}
-        </section>
-      )}
+            <ol className="list-decimal space-y-1 pl-5 text-[15px] leading-relaxed text-stone-700 dark:text-stone-300">
+              <li>
+                <b>크롬</b>으로 이 주소를 엽니다
+              </li>
+              <li>
+                오른쪽 위 메뉴 <b>⋮</b> 를 누릅니다
+              </li>
+              <li>
+                <b>홈 화면에 추가</b> 또는 <b>앱 설치</b> → <b>설치</b>
+              </li>
+            </ol>
+          </div>
+          <p className="text-[13px] text-stone-500">
+            홈 화면에서 열면 주소창 없이 앱처럼 열리고, 인터넷이 없어도 기록을 볼 수 있어요.
+          </p>
+        </div>
+      </section>
 
       <section className={card}>
         <button
