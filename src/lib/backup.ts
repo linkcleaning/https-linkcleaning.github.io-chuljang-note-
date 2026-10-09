@@ -36,7 +36,7 @@ export function normalize(p: Partial<Place>): Place {
   const now = Date.now();
   return {
     id: p.id || `${now.toString(36)}-${Math.random().toString(36).slice(2, 10)}`,
-    category: p.category === 'stay' || p.category === 'rest' ? p.category : 'food',
+    category: p.category === 'cafe' || p.category === 'stay' || p.category === 'rest' ? p.category : 'food',
     name: String(p.name ?? '').trim(),
     sido: p.sido ?? '',
     sigungu: p.sigungu ?? '',

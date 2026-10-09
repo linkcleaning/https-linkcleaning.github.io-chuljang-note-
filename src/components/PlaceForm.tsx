@@ -1,8 +1,10 @@
 // 기록 입력/수정 폼 — 현장에서 10초 기록을 목표로: 필수는 상호명뿐, 나머지는 원터치
 import { useEffect, useRef, useState } from 'react';
 import {
+  ArrowLeft,
   BedDouble,
   ChevronDown,
+  ChevronRight,
   Coffee,
   History,
   Link2,
@@ -19,6 +21,8 @@ import type { Category, Dish, Place, RegionFilter } from '../types';
 import {
   FOOD_PRICE_PRESETS,
   FOOD_TAGS,
+  CAFE_PRICE_PRESETS,
+  CAFE_TAGS,
   REST_FOOD_PRESETS,
   REST_TAGS,
   REVISIT_LABEL,
@@ -32,6 +36,7 @@ import { kakaoMapUrl, naverMapUrl } from '../lib/maps';
 import { RegionPicker } from './RegionPicker';
 import { RestPicker } from './RestPicker';
 import { restLabel } from '../data/restAreas';
+import { CategoryIcon } from './PlaceCard';
 import { Chip, Field, Sheet, StarInput, Toggle, inputCls } from './ui';
 
 const blank = (category: Category, region: RegionFilter): Place => ({
@@ -85,13 +90,16 @@ export function PlaceForm({
   const [autoHint, setAutoHint] = useState('');
   const [restOpen, setRestOpen] = useState(false);
   const [customRest, setCustomRest] = useState(false);
+  const [step, setStep] = useState<1 | 2>(1);
+  const bodyTop = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!open) return;
     const base = initial ? { ...initial } : blank(defaultCategory, defaultRegion);
     setF(base);
-    const price = base.category === 'food' ? base.pricePerPerson : base.stayPrice;
+    const price = base.category === 'food' || base.category === 'cafe' ? base.pricePerPerson : base.stayPrice;
+    setStep(1);
     setPriceText(price ? price.toLocaleString('ko-KR') : '');
     setError('');
     setAutoHint('');
@@ -106,6 +114,8 @@ export function PlaceForm({
 
   const set = <K extends keyof Place>(k: K, v: Place[K]) => setF((s) => ({ ...s, [k]: v }));
   const isFood = f.category === 'food';
+  const isCafe = f.category === 'cafe';
+  const isEat = isFood || isCafe; // 1인 가격·대표 메뉴를 쓰는 종류
   const isRest = f.category === 'rest';
 
   const switchCategory = (c: Category) => {
@@ -145,7 +155,7 @@ export function PlaceForm({
 
   const setPrice = (n: number | null) => {
     setPriceText(n ? n.toLocaleString('ko-KR') : '');
-    if (isFood) set('pricePerPerson', n);
+    if (isEat) set('pricePerPerson', n);
     else set('stayPrice', n);
   };
 
@@ -162,8 +172,27 @@ export function PlaceForm({
 
   const searchQuery = [f.sigungu || f.sido, f.name].filter(Boolean).join(' ');
 
+  const requireName = () => {
+    if (f.name.trim()) return true;
+    if (isRest) {
+      setError('휴게소를 선택해 주세요');
+      setRestOpen(true);
+    } else {
+      setError('상호명을 입력해 주세요');
+      nameRef.current?.focus();
+    }
+    return false;
+  };
+
+  const goNext = () => {
+    if (!requireName()) return;
+    setStep(2);
+    setTimeout(() => bodyTop.current?.scrollIntoView({ block: 'start' }), 0);
+  };
+
   const submit = () => {
     if (!f.name.trim()) {
+      setStep(1);
       if (isRest) {
         setError('휴게소를 선택해 주세요');
         setRestOpen(true);
@@ -177,15 +206,15 @@ export function PlaceForm({
     onSave({
       ...f,
       name: f.name.trim(),
-      pricePerPerson: f.category === 'food' ? price : f.pricePerPerson,
+      pricePerPerson: f.category === 'food' || f.category === 'cafe' ? price : f.pricePerPerson,
       stayPrice: f.category === 'stay' ? price : f.stayPrice,
       dishes: f.dishes.map((d) => ({ ...d, name: d.name.trim() })).filter((d) => d.name),
       updatedAt: Date.now(),
     });
   };
 
-  const tone = isFood ? 'food' : isRest ? 'rest' : 'stay';
-  const presets = isFood ? FOOD_PRICE_PRESETS : STAY_PRICE_PRESETS;
+  const tone = f.category;
+  const presets = isFood ? FOOD_PRICE_PRESETS : isCafe ? CAFE_PRICE_PRESETS : STAY_PRICE_PRESETS;
 
   return (
     <>
@@ -193,21 +222,57 @@ export function PlaceForm({
         open={open}
         onClose={onClose}
         full
-        title={initial ? '기록 수정' : '새 기록'}
+        title={
+          <span className="flex items-center gap-2">
+            {step === 2 && (
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                aria-label="이전 단계"
+                className="-ml-2 grid size-10 place-items-center rounded-full active:bg-stone-100 dark:active:bg-stone-800"
+              >
+                <ArrowLeft className="size-5" />
+              </button>
+            )}
+            {initial ? '기록 수정' : '새 기록'}
+            <span className="text-sm font-semibold text-stone-400 tabular-nums">{step}/2</span>
+          </span>
+        }
         footer={
-          <button
-            onClick={submit}
-            className="min-h-14 w-full rounded-2xl bg-brand-700 text-lg font-bold text-white shadow-lg shadow-brand-700/25 active:bg-brand-800"
-          >
-            {initial ? '수정 저장' : '저장하기'}
-          </button>
+          step === 1 ? (
+            <div className="flex gap-2">
+              <button
+                onClick={submit}
+                className="min-h-14 shrink-0 rounded-2xl border border-stone-300 px-4 text-[16px] font-bold text-stone-700 active:bg-stone-100 dark:border-stone-700 dark:text-stone-200 dark:active:bg-stone-800"
+              >
+                {initial ? '저장' : '바로 저장'}
+              </button>
+              <button
+                onClick={goNext}
+                className="flex min-h-14 flex-1 items-center justify-center gap-1 rounded-2xl bg-brand-700 text-lg font-bold text-white shadow-lg shadow-brand-700/25 active:bg-brand-800"
+              >
+                다음 <ChevronRight className="size-5" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={submit}
+              className="min-h-14 w-full rounded-2xl bg-brand-700 text-lg font-bold text-white shadow-lg shadow-brand-700/25 active:bg-brand-800"
+            >
+              {initial ? '수정 저장' : '저장하기'}
+            </button>
+          )
         }
       >
+        <div ref={bodyTop} />
+        {step === 1 && (
+        <>
         {/* 카테고리 */}
-        <div className="mb-5 grid grid-cols-3 gap-2">
+        <div className="mb-5 grid grid-cols-2 gap-2">
           {(
             [
-              ['food', '식당/카페', UtensilsCrossed, 'border-food bg-orange-50 text-orange-800 dark:bg-orange-950/40 dark:text-orange-200'],
+              ['food', '식당', UtensilsCrossed, 'border-food bg-orange-50 text-orange-800 dark:bg-orange-950/40 dark:text-orange-200'],
+              ['cafe', '카페', Coffee, 'border-cafe bg-amber-50 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200'],
               ['stay', '숙박', BedDouble, 'border-stay bg-indigo-50 text-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200'],
               ['rest', '휴게소', Signpost, 'border-rest bg-green-50 text-green-800 dark:bg-green-950/40 dark:text-green-200'],
             ] as const
@@ -216,7 +281,7 @@ export function PlaceForm({
               key={c}
               type="button"
               onClick={() => switchCategory(c)}
-              className={`flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl border-2 text-[16px] font-bold active:scale-[0.98] ${
+              className={`flex min-h-16 items-center justify-center gap-2 rounded-2xl border-2 text-[17px] font-bold active:scale-[0.98] ${
                 f.category === c ? on : 'border-stone-200 text-stone-500 dark:border-stone-700'
               }`}
             >
@@ -270,7 +335,7 @@ export function PlaceForm({
               set('name', e.target.value);
               if (error) setError('');
             }}
-            placeholder={isFood ? '예) 할매국밥' : '예) OO모텔 해운대점'}
+            placeholder={isFood ? '예) 할매국밥' : isCafe ? '예) 바다뷰 카페' : '예) OO모텔 해운대점'}
             className={`${inputCls} min-h-14 text-lg font-semibold ${error ? 'border-rose-500' : ''}`}
             enterKeyHint="done"
           />
@@ -293,6 +358,22 @@ export function PlaceForm({
           </button>
         </Field>
         )}
+        <p className="mt-1 text-center text-sm text-stone-400">별점·가격·태그·메모는 다음 화면에서 입력해요</p>
+        </>
+        )}
+
+        {step === 2 && (
+        <>
+        <div className="mb-5 flex items-center gap-3 rounded-2xl bg-stone-100 px-4 py-3 dark:bg-stone-800">
+          <CategoryIcon c={f.category} className="size-5 shrink-0 text-stone-500" />
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-[16px] font-bold">{f.name}</p>
+            <p className="truncate text-[13px] text-stone-500">{regionLabel(f.sido, f.sigungu)}</p>
+          </div>
+          <button type="button" onClick={() => setStep(1)} className="shrink-0 text-sm font-semibold text-brand-700 dark:text-brand-500">
+            변경
+          </button>
+        </div>
 
         <Field label="별점">
           <StarInput value={f.rating} onChange={(v) => set('rating', v)} />
@@ -399,19 +480,20 @@ export function PlaceForm({
               <Plus className="size-4" /> 메뉴 직접 추가
             </button>
           </Field>
-        ) : isFood ? (
+        ) : isEat ? (
           <>
-            <Field label="대표 메뉴">
+            <Field label={isCafe ? '대표 메뉴·음료' : '대표 메뉴'}>
               <input
                 value={f.menu}
                 onChange={(e) => set('menu', e.target.value)}
-                placeholder="예) 돼지국밥, 백반"
+                placeholder={isCafe ? '예) 아인슈페너, 소금빵' : '예) 돼지국밥, 백반'}
                 className={inputCls}
               />
             </Field>
             <Field label="1인당 가격">
               <PriceInput value={priceText} onChange={setPriceText} onPreset={setPrice} presets={presets} tone={tone} />
             </Field>
+            {isFood && (
             <Field label="식사 유형">
               <div className="flex gap-2">
                 <Toggle checked={f.solo} onChange={(v) => set('solo', v)} label="혼밥 가능" icon={<User className="size-5" />} />
@@ -423,6 +505,7 @@ export function PlaceForm({
                 />
               </div>
             </Field>
+            )}
           </>
         ) : (
           <>
@@ -456,9 +539,9 @@ export function PlaceForm({
           </>
         )}
 
-        <Field label={isFood ? '특징 태그' : isRest ? '휴게소 편의시설' : '시설·컨디션 태그'} hint="원터치 선택">
+        <Field label={isEat ? '특징 태그' : isRest ? '휴게소 편의시설' : '시설·컨디션 태그'} hint="원터치 선택">
           <div className="flex flex-wrap gap-2">
-            {(isFood ? FOOD_TAGS : isRest ? REST_TAGS : STAY_TAGS).map((t) => (
+            {(isFood ? FOOD_TAGS : isCafe ? CAFE_TAGS : isRest ? REST_TAGS : STAY_TAGS).map((t) => (
               <Chip key={t} active={f.tags.includes(t)} onClick={() => toggleTag(t)} tone={tone}>
                 {t}
               </Chip>
@@ -531,6 +614,8 @@ export function PlaceForm({
         <Field label="방문일">
           <input type="date" value={f.visitedAt} onChange={(e) => set('visitedAt', e.target.value)} className={inputCls} />
         </Field>
+        </>
+        )}
       </Sheet>
 
       <RestPicker
@@ -583,7 +668,7 @@ function PriceInput({
   onChange: (v: string) => void;
   onPreset: (n: number) => void;
   presets: number[];
-  tone: 'food' | 'stay' | 'rest';
+  tone: Category;
 }) {
   const n = parsePrice(value);
   return (

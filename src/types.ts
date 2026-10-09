@@ -1,4 +1,4 @@
-export type Category = 'food' | 'stay' | 'rest';
+export type Category = 'food' | 'cafe' | 'stay' | 'rest';
 export type Revisit = 'yes' | 'soso' | 'no';
 export type StayPriceType = 'paid' | 'off' | 'peak';
 
@@ -41,7 +41,7 @@ export interface Place {
   updatedAt: number;
 }
 
-export type Tab = 'all' | 'food' | 'stay' | 'rest';
+export type Tab = 'all' | 'food' | 'cafe' | 'stay' | 'rest';
 
 export interface RegionFilter {
   sido: string; // '' = 전국

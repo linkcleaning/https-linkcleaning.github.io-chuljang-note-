@@ -70,13 +70,14 @@ export function Chip({
   active: boolean;
   onClick: () => void;
   children: ReactNode;
-  tone?: 'brand' | 'food' | 'stay' | 'rest';
+  tone?: 'brand' | 'food' | 'cafe' | 'stay' | 'rest';
 }) {
   const on = {
     brand: 'border-brand-600 bg-brand-600 text-white',
     food: 'border-food bg-food text-white',
     stay: 'border-stay bg-stay text-white',
     rest: 'border-rest bg-rest text-white',
+    cafe: 'border-cafe bg-cafe text-white',
   }[tone];
   return (
     <button

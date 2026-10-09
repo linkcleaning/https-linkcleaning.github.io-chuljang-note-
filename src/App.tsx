@@ -10,6 +10,7 @@ import {
   Search,
   Settings,
   Signpost,
+  Coffee,
   Star,
   UtensilsCrossed,
   X,
@@ -172,6 +173,7 @@ export default function App() {
     food: searched.filter((p) => p.category === 'food').length,
     stay: searched.filter((p) => p.category === 'stay').length,
     rest: searched.filter((p) => p.category === 'rest').length,
+    cafe: searched.filter((p) => p.category === 'cafe').length,
   };
 
   const visible = useMemo(() => {
@@ -282,11 +284,12 @@ export default function App() {
             </div>
 
             {/* 탭 */}
-            <div className="mx-4 mt-2.5 mb-2.5 grid grid-cols-4 gap-1 rounded-2xl bg-stone-200/70 p-1 dark:bg-stone-900">
+            <div className="mx-4 mt-2.5 mb-2.5 grid grid-cols-5 gap-0.5 rounded-2xl bg-stone-200/70 p-1 dark:bg-stone-900">
               {(
                 [
                   ['all', '전체', List, 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900'],
-                  ['food', '맛집', UtensilsCrossed, 'bg-food text-white'],
+                  ['food', '식당', UtensilsCrossed, 'bg-food text-white'],
+                  ['cafe', '카페', Coffee, 'bg-cafe text-white'],
                   ['stay', '숙소', BedDouble, 'bg-stay text-white'],
                   ['rest', '휴게소', Signpost, 'bg-rest text-white'],
                 ] as const
@@ -294,12 +297,14 @@ export default function App() {
                 <button
                   key={v}
                   onClick={() => setTab(v)}
-                  className={`flex h-11 min-w-0 items-center justify-center gap-1 rounded-xl text-[14px] font-bold whitespace-nowrap transition ${
+                  className={`flex h-12 min-w-0 flex-col items-center justify-center rounded-xl text-[14px] leading-tight font-bold whitespace-nowrap transition ${
                     tab === v ? `${on} shadow-sm` : 'text-stone-500 dark:text-stone-400'
                   }`}
                 >
-                  <Icon className="size-4 shrink-0 max-[370px]:hidden" />
-                  {label}
+                  <span className="flex items-center gap-0.5">
+                    <Icon className="size-3.5 shrink-0 max-[380px]:hidden" />
+                    {label}
+                  </span>
                   <span className="text-[11px] font-semibold opacity-70 tabular-nums">{tabCounts[v]}</span>
                 </button>
               ))}

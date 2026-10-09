@@ -15,6 +15,8 @@ export const STAY_TAGS = [
   '늦은 체크인 OK',
 ];
 
+export const CAFE_TAGS = ['콘센트 많음', '와이파이 빠름', '조용함', '주차 가능', '디저트 맛집', '커피 맛집', '뷰 좋음', '테이크아웃', '24시간', '노키즈'];
+
 export const REST_TAGS = ['화장실 깨끗', '주차 넉넉', '전기차 충전', '주유소', 'LPG 충전', '수면실', '샤워실', '화물차 라운지', '편의점', '흡연실 분리'];
 
 /** 휴게소 단골 메뉴 — 탭하면 먹은 메뉴에 바로 추가 */
@@ -33,4 +35,5 @@ export const REVISIT_LABEL = {
 } as const;
 
 export const FOOD_PRICE_PRESETS = [8000, 10000, 12000, 15000, 20000, 30000];
+export const CAFE_PRICE_PRESETS = [3000, 4500, 5500, 6500, 8000, 12000];
 export const STAY_PRICE_PRESETS = [40000, 50000, 60000, 80000, 100000, 150000];

@@ -32,13 +32,14 @@ export function keyTags(p: Place) {
 }
 
 export const CATEGORY_STYLE = {
-  food: { label: '식당/카페', icon: 'bg-orange-100 text-food dark:bg-orange-950/60', tag: 'bg-orange-50 text-orange-800 dark:bg-orange-950/40 dark:text-orange-200', badge: 'bg-food' },
+  food: { label: '식당', icon: 'bg-orange-100 text-food dark:bg-orange-950/60', tag: 'bg-orange-50 text-orange-800 dark:bg-orange-950/40 dark:text-orange-200', badge: 'bg-food' },
+  cafe: { label: '카페', icon: 'bg-amber-100 text-cafe dark:bg-amber-950/60 dark:text-amber-300', tag: 'bg-amber-50 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200', badge: 'bg-cafe' },
   stay: { label: '숙박', icon: 'bg-indigo-100 text-stay dark:bg-indigo-950/60 dark:text-indigo-300', tag: 'bg-indigo-50 text-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200', badge: 'bg-stay' },
   rest: { label: '휴게소', icon: 'bg-green-100 text-rest dark:bg-green-950/60 dark:text-green-300', tag: 'bg-green-50 text-green-800 dark:bg-green-950/40 dark:text-green-200', badge: 'bg-rest' },
 } as const;
 
 export const CategoryIcon = ({ c, className }: { c: Place['category']; className?: string }) =>
-  c === 'food' ? <UtensilsCrossed className={className} /> : c === 'stay' ? <BedDouble className={className} /> : <Signpost className={className} />;
+  c === 'food' ? <UtensilsCrossed className={className} /> : c === 'cafe' ? <Coffee className={className} /> : c === 'stay' ? <BedDouble className={className} /> : <Signpost className={className} />;
 
 export function priceLine(p: Place) {
   if (p.category === 'rest') {
@@ -46,7 +47,7 @@ export function priceLine(p: Place) {
     const total = p.dishes.reduce((a, d) => a + (d.price ?? 0), 0);
     return [names, total ? `${won(total)}` : ''].filter(Boolean).join(' · ');
   }
-  if (p.category === 'food') {
+  if (p.category === 'food' || p.category === 'cafe') {
     const price = p.pricePerPerson ? `1인 ${won(p.pricePerPerson)}` : '';
     return [p.menu, price].filter(Boolean).join(' · ');
   }

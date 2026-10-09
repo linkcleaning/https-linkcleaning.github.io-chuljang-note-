@@ -28,6 +28,7 @@ export function SettingsView({
   }, []);
 
   const food = places.filter((p) => p.category === 'food').length;
+  const cafe = places.filter((p) => p.category === 'cafe').length;
   const stay = places.filter((p) => p.category === 'stay').length;
   const rest = places.filter((p) => p.category === 'rest').length;
   const regions = new Set(places.map((p) => `${p.sido} ${p.sigungu}`)).size;
@@ -84,9 +85,10 @@ export function SettingsView({
     <div className="space-y-3 px-4 pt-2 pb-6">
       <section className={card}>
         <h2 className={h}>내 기록</h2>
-        <div className="grid grid-cols-4 text-center">
+        <div className="grid grid-cols-5 text-center">
           {[
-            ['맛집', food],
+            ['식당', food],
+            ['카페', cafe],
             ['숙소', stay],
             ['휴게소', rest],
             ['지역', regions],
